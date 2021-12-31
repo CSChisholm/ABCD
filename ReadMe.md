@@ -30,8 +30,8 @@ for propagation by a distance <img src="https://render.githubusercontent.com/ren
 for transmission through a thin lens with focal length <img src="https://render.githubusercontent.com/render/math?math=f.">
 
 ## Requirements
--numpy
--matplotlib
+- numpy
+- matplotlib
 
 ## To come
 
