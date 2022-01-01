@@ -38,4 +38,4 @@ The thick lens implementation is taken from[^ref2]
 ***References***
 
 [^ref1]: P. W. Milonni and J. H. Eberly, **Lasers** (John Wiley and Sons, New York, 1988).
-[^ref2]: S. Nemoto, Applied Optics, *29*(6), 809 (1990).
+[^ref2]: S. Nemoto, Applied Optics, **29**(6), 809 (1990).
