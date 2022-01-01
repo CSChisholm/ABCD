@@ -206,7 +206,7 @@ def main(z0,w0,wl,focus,propagationdistance,lenses=None):
         lens.plot(waist.max())
     plt.xlabel('$z$ (mm)')
     plt.ylabel('$w$ ($\mu$m)')
-    return zArray, waist
+    return zArray, waist, beam
 
 if (__name__=='__main__'):
     main(z0,w0,wl,focus,propagationdistance,lenses)
