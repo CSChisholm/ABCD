@@ -75,11 +75,6 @@ class Beam:
         self.ABCD(self.MakeMatrix(*self.ABCDlens(focal)))
         return
     
-    def passthroughthicklens(self,thicklens):
-        self.ABCD(thicklens.ABCDmatrix())
-        self.z+=thicklens.thickness
-        return
-    
     def ABCD(self,mat):
         '''Applies ABCD matrix'''
         vec = mat@np.array([[self.q],[1]])
@@ -124,15 +119,6 @@ class ThickLens:
         self.thickness = 1 #Thickness of lens, um
         self.diameter = 50e3 #lens diameter, um
         self.n = 1 #Refractive index of material
-    
-    def ABCDmatrix(self):
-        '''Constructs the thick lens ABCD matrix'''
-        f2 = self.n*self.R1/(self.n-1)
-        f3 = self.R2/(1-self.n)
-        m1 = np.array([[1,0],[1/f2,1/self.n]])
-        m2 = np.array([[1,self.thickness],[0,1]])
-        m3 = np.array([[1,0],[1/f3,self.n]])
-        return m3@m2@m1
     
     def plot(self,hh):
         '''Draws the two surfaces of the thick lens'''
@@ -179,6 +165,21 @@ def main(z0,w0,wl,focus,propagationdistance,lenses=None):
             shiftdistance = beam.z-lenses[0]
             for lens in lenses:
                 lens.location+=shiftdistance
+    #Replace thick lenses with effective thin lenses
+    lensesSave = lenses.copy()
+    lenses = []
+    for lens in lensesSave:
+        if (isinstance(lens,ThickLens)):
+            #Replace this lens with two thin lenses at the surfaces
+            rlens1 = Lens()
+            rlens1.location = lens.location
+            rlens1.focal = lens.n*lens.R1/(lens.n-1)
+            rlens2 = Lens()
+            rlens2.location = lens.location+lens.thickness
+            rlens2.focal = lens.R2/(1-lens.n)
+            lenses.extend([rlens1,rlens2])
+        else:
+            lenses.append(lens)
     
     #Perform propagation
     zArray = np.linspace(beam.z,beam.z+propagationdistance,101)
@@ -192,10 +193,7 @@ def main(z0,w0,wl,focus,propagationdistance,lenses=None):
             if (lens.location<beam.z):
                 raise Exception('Lens collision error')
             beam.propagate(lens.location-currentpoint)
-            if isinstance(lens,Lens):
-                beam.passthroughlens(lens.focal)
-            else:
-                beam.passthroughthicklens(lens)
+            beam.passthroughlens(lens.focal)
             currentpoint = beam.z
         beam.propagate(nextpoint-currentpoint)
         waist[itr] = beam.radius()
@@ -204,7 +202,7 @@ def main(z0,w0,wl,focus,propagationdistance,lenses=None):
     plt.figure()
     plt.plot(zArray*1e-3,waist,c='C0')
     plt.plot(zArray*1e-3,-waist,c='C0')
-    for lens in lenses:
+    for lens in lensesSave:
         lens.plot(waist.max())
     plt.xlabel('$z$ (mm)')
     plt.ylabel('$w$ ($\mu$m)')
