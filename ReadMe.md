@@ -21,11 +21,11 @@ When the beam propagates through free space or a thin lens, it transforms accord
 
 where
 
-<img src="https://render.githubusercontent.com/render/math?math=\left(\begin{array}{cc} A & B \\ C & D\end{array}\right)} = \left(\begin{array}{cc} 1 & d \\ 0 & 1\end{array}\right)">
+<img src="https://render.githubusercontent.com/render/math?math=[A, B, C, D] = [1, d, 0, 1]">
 
 for propagation by a distance <img src="https://render.githubusercontent.com/render/math?math=d"> and
 
-<img src="https://render.githubusercontent.com/render/math?math=\left(\begin{array}{cc} A & B \\ C & D\end{array}\right)} = \left(\begin{array}{cc} 1 & 0 \\ -1/f & 1\end{array}\right)">
+<img src="https://render.githubusercontent.com/render/math?math=[A, B, C, D] = [1, 0, -1/f, 1]">
 
 for transmission through a thin lens with focal length <img src="https://render.githubusercontent.com/render/math?math=f.">
 
