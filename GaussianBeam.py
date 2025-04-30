@@ -161,7 +161,6 @@ lenses.append(lens1)
 
 def main(z0,w0,wl,focus,propagationdistance,lenses=None):
     '''Runs the propagation'''
-    plt.close("all")
     if (lenses is None):
         lenses = []
     
@@ -221,3 +220,4 @@ def main(z0,w0,wl,focus,propagationdistance,lenses=None):
 
 if (__name__=='__main__'):
     main(z0,w0,wl,focus,propagationdistance,lenses)
+    plt.close("all")
